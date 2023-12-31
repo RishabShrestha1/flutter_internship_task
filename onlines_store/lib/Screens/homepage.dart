@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:onlines_store/Api/apihandle.dart';
 import 'package:onlines_store/Model/product.dart';
+import 'package:onlines_store/Screens/productdetail.dart';
 import '../Components/cache_manager.dart';
 
 class Homepage extends StatefulWidget {
@@ -11,6 +12,25 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  late Future<List<Product>> _productsFuture;
+  @override
+  void initState() {
+    _productsFuture = _getProducts();
+    super.initState();
+  }
+
+  Future<List<Product>> _getProducts() async {
+    final cachedProducts = await CacheManager.getCachedProducts();
+
+    if (cachedProducts.isNotEmpty) {
+      return cachedProducts;
+    } else {
+      final apiProducts = await ApiHandle().fetchProducts();
+      await CacheManager.cacheProducts(apiProducts);
+      return apiProducts;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,23 +38,6 @@ class _HomepageState extends State<Homepage> {
         backgroundColor: Theme.of(context).colorScheme.primary,
         title: const Text('Online Store'),
         actions: [
-          IconButton(
-            onPressed: () async {
-              // Load products from cache
-              final cachedProducts = await CacheManager.getCachedProducts();
-              // Use cached products or fetch from API if cache is empty
-              final products = cachedProducts.isNotEmpty
-                  ? cachedProducts
-                  : await ApiHandle().fetchProducts();
-
-              // Cache the products
-              CacheManager.cacheProducts(products);
-
-              // Update the UI with products
-              setState(() {});
-            },
-            icon: const Icon(Icons.refresh),
-          ),
           IconButton(
             onPressed: () => Navigator.pushNamed(context, '/search'),
             icon: const Icon(Icons.search),
@@ -46,7 +49,7 @@ class _HomepageState extends State<Homepage> {
         ],
       ),
       body: FutureBuilder<List<Product>>(
-        future: ApiHandle().fetchProducts(),
+        future: _productsFuture,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return GridView.builder(
@@ -60,8 +63,13 @@ class _HomepageState extends State<Homepage> {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, '/product',
-                        arguments: snapshot.data![index]);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ProductPage(product: snapshot.data![index]),
+                      ),
+                    );
                   },
                   child: SizedBox(
                     height: 500,

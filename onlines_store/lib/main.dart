@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:onlines_store/Model/sample.dart';
 import 'package:onlines_store/Screens/homepage.dart';
 import 'package:onlines_store/Screens/productdetail.dart';
 import 'package:onlines_store/Screens/searchpage.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/home': (context) => const Homepage(),
         '/search': (context) => const SearchPage(),
-        '/product': (context) => const ProductPage(),
+        '/product': (context) => ProductPage(product: sampleProduct),
       },
     );
   }
