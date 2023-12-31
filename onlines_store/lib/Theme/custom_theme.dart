@@ -7,4 +7,12 @@ ThemeData mytheme = ThemeData(
     secondary: Color.fromARGB(255, 144, 202, 249),
     inversePrimary: Colors.white,
   ),
+  cardTheme: const CardTheme(
+    elevation: 5.0,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(
+        Radius.circular(10.0),
+      ),
+    ),
+  ),
 );

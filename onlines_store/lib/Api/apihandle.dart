@@ -10,7 +10,7 @@ class ApiHandle {
     var url = apiConstant.baseurl + apiConstant.allproducts;
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
-      List<dynamic> data = jsonDecode(response.body);
+      List<dynamic> data = json.decode(response.body);
       List<Product> products =
           data.map((json) => Product.fromJson(json)).toList();
       return products;
