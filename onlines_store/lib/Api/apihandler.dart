@@ -18,4 +18,6 @@ class ApiHandle {
       throw Exception('Failed to load products');
     }
   }
+
+  searchProducts(String searchText) {}
 }

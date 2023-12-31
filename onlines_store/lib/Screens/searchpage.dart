@@ -1,65 +1,125 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:onlines_store/Api/apihandler.dart';
+import 'package:onlines_store/Model/product.dart';
+import 'package:onlines_store/Screens/productdetail.dart';
+import '../Components/cache_manager.dart';
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({super.key});
+  const SearchPage({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _SearchPageState createState() => _SearchPageState();
 }
 
 class _SearchPageState extends State<SearchPage> {
-  final TextEditingController _searchController = TextEditingController();
-  List<String> _searchResults = [];
-
-  void _searchItems() async {
-    String searchTerm = _searchController.text;
-    String apiUrl = 'https://api.example.com/search?term=$searchTerm';
-
-    http.Response response = await http.get(Uri.parse(apiUrl));
-    if (response.statusCode == 200) {
-      List<dynamic> data = jsonDecode(response.body);
-      List<String> results = data.map((item) => item.toString()).toList();
-      setState(() {
-        _searchResults = results;
-      });
-    } else {
-      print('Failed to fetch search results');
-    }
-  }
+  TextEditingController _searchController = TextEditingController();
+  List<Product> _searchResults = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Search Page'),
+        title: TextField(
+          controller: _searchController,
+          decoration: InputDecoration(
+            hintText: 'Search products...',
+          ),
+          onSubmitted: (value) {
+            _performSearch();
+          },
+          onChanged: (value) {
+            _performSearch();
+          },
+        ),
       ),
-      body: Column(
-        children: [
-          TextField(
-            controller: _searchController,
-            decoration: const InputDecoration(
-              hintText: 'Enter search term',
-            ),
-          ),
-          ElevatedButton(
-            onPressed: _searchItems,
-            child: const Text('Search'),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _searchResults.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(_searchResults[index]),
-                );
-              },
-            ),
-          ),
-        ],
+      body: Container(
+        child: _buildSearchResults(),
       ),
     );
+  }
+
+  void _performSearch() async {
+    String searchText = _searchController.text;
+    if (searchText.isNotEmpty) {
+      try {
+        // Attempt to get cached results first
+        List<Product> cachedResults = await CacheManager.getCachedProducts();
+        if (cachedResults.isNotEmpty) {
+          setState(() {
+            _searchResults = _filterResults(cachedResults, searchText);
+          });
+        }
+
+        // Fetch and cache new results
+        List<Product> results = await ApiHandle().searchProducts(searchText);
+        await CacheManager.cacheProducts(results);
+
+        setState(() {
+          _searchResults = _filterResults(results, searchText);
+        });
+      } catch (e) {
+        print('Error performing search: $e');
+      }
+    } else {
+      setState(() {
+        _searchResults = [];
+      });
+    }
+  }
+
+  List<Product> _filterResults(List<Product> results, String searchText) {
+    return results
+        .where((product) =>
+            product.title?.toLowerCase().contains(searchText.toLowerCase()) ??
+            false)
+        .toList();
+  }
+
+  Widget _buildSearchResults() {
+    if (_searchResults.isNotEmpty) {
+      return ListView.builder(
+        itemCount: _searchResults.length,
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      ProductPage(product: _searchResults[index]),
+                ),
+              );
+            },
+            child: Card(
+              child: Row(
+                children: [
+                  SizedBox(
+                    height: 100,
+                    width: 100,
+                    child: Image.network(
+                      _searchResults[index].image ?? '',
+                      fit: BoxFit.scaleDown,
+                    ),
+                  ),
+                  Expanded(
+                    child: ListTile(
+                      title: Text(_searchResults[index].title ?? ''),
+                      subtitle: Text(
+                        '\$${_searchResults[index].price.toString() ?? ''}',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    } else {
+      return Center(
+        child: Text('No results found.'),
+      );
+    }
   }
 }
