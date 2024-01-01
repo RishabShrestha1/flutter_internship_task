@@ -6,6 +6,7 @@ import './constant.dart';
 
 class ApiHandle {
   ApiConstant apiConstant = ApiConstant();
+  //fetch all products from api and return a list of products
   Future<List<Product>> fetchProducts() async {
     var url = apiConstant.baseurl + apiConstant.allproducts;
     final response = await http.get(Uri.parse(url));

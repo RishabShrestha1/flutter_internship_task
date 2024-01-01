@@ -1,10 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:onlines_store/Model/mycart.dart';
 import 'package:onlines_store/Model/product.dart';
+import 'package:provider/provider.dart';
 
 class ProductPage extends StatelessWidget {
   const ProductPage({Key? key, required this.product}) : super(key: key);
 
   final Product product;
+
+  void _addToCart(BuildContext context, Product product) {
+    CartProvider cartProvider =
+        Provider.of<CartProvider>(context, listen: false);
+    CartItem item = CartItem(
+      productId: product.id!,
+      productName: product.title!,
+      price: product.price!,
+    );
+    cartProvider.addToCart(item);
+
+    // Show a snackbar or other feedback to indicate the item was added to the cart
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('${product.title} added to cart'),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +89,9 @@ class ProductPage extends StatelessWidget {
                       width: 20,
                     ),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        _addToCart(context, product);
+                      },
                       child: const Text('Add to Cart'),
                     ),
                     ElevatedButton(

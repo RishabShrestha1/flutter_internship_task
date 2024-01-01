@@ -5,6 +5,7 @@ import 'dart:convert';
 class CacheManager {
   static const String keyProducts = 'cached_products';
 
+  //cache Product so that no redundant api calls are made
   static Future<void> cacheProducts(List<Product> products) async {
     final prefs = await SharedPreferences.getInstance();
     final encodedProducts =
@@ -13,6 +14,7 @@ class CacheManager {
     prefs.setString(keyProducts, jsonString);
   }
 
+  //get cached products from shared preferences
   static Future<List<Product>> getCachedProducts() async {
     final prefs = await SharedPreferences.getInstance();
     final jsonString = prefs.getString(keyProducts);

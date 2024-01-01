@@ -1,8 +1,10 @@
 // product_widget.dart
 
 import 'package:flutter/material.dart';
+import 'package:onlines_store/Model/mycart.dart';
 import 'package:onlines_store/Model/product.dart';
 import 'package:onlines_store/Screens/productdetail.dart';
+import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class ProductWidget extends StatefulWidget {
@@ -15,6 +17,43 @@ class ProductWidget extends StatefulWidget {
 }
 
 class _ProductWidgetState extends State<ProductWidget> {
+  //add to cart method
+  void _addToCart(BuildContext context, Product product) {
+    CartProvider cartProvider =
+        Provider.of<CartProvider>(context, listen: false);
+    CartItem item = CartItem(
+      productId: product.id!,
+      productName: product.title!,
+      price: product.price!,
+    );
+
+    // Show dialog box to confirm
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Add to Cart'),
+          content: Text('Do you want to add ${product.title} to your cart?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('No'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                cartProvider.addToCart(item);
+              },
+              child: const Text('Yes'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -79,7 +118,9 @@ class _ProductWidgetState extends State<ProductWidget> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        _addToCart(context, widget.product);
+                      },
                       icon: const Icon(Icons.add_shopping_cart),
                     ),
                   ),

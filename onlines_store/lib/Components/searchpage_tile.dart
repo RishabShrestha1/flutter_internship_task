@@ -10,6 +10,7 @@ class ProductSearchResultItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //return product tile matching the search result that are clickable
     return GestureDetector(
       onTap: () {
         Navigator.push(
