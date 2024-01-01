@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import '../Model/mycart.dart';
 
 class Mycart extends StatefulWidget {
@@ -28,11 +29,11 @@ class _MycartState extends State<Mycart> {
                 child: Row(
                   children: [
                     SizedBox(
-                      width: 100,
-                      height: 100,
+                      width: Adaptive.w(20),
+                      height: 10.h,
                       child: Image.network(
-                        'https://picsum.photos/250?image=9',
-                        fit: BoxFit.cover,
+                        item.image,
+                        fit: BoxFit.scaleDown,
                       ),
                     ),
                     Expanded(

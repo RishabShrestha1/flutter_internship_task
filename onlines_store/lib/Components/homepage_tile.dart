@@ -22,6 +22,7 @@ class _ProductWidgetState extends State<ProductWidget> {
     CartProvider cartProvider =
         Provider.of<CartProvider>(context, listen: false);
     CartItem item = CartItem(
+      image: product.image!,
       productId: product.id!,
       productName: product.title!,
       price: product.price!,
@@ -32,16 +33,27 @@ class _ProductWidgetState extends State<ProductWidget> {
       context: context,
       builder: (context) {
         return AlertDialog(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
           title: const Text('Add to Cart'),
           content: Text('Do you want to add ${product.title} to your cart?'),
           actions: [
             TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.red,
+              ),
               onPressed: () {
                 Navigator.pop(context);
               },
               child: const Text('No'),
             ),
             TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.green,
+              ),
               onPressed: () {
                 Navigator.pop(context);
                 cartProvider.addToCart(item);
@@ -75,13 +87,18 @@ class _ProductWidgetState extends State<ProductWidget> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image.network(
-                    widget.product.image!,
-                    height: 12.h,
-                    width: double.infinity,
-                    fit: BoxFit.scaleDown,
+                  Center(
+                    child: Expanded(
+                      child: Image.network(
+                        widget.product.image!,
+                        height: 15.h,
+                        width: Adaptive.w(20),
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.center,
+                      ),
+                    ),
                   ),
-                  const SizedBox(height: 20), // 10p
+                  const SizedBox(height: 5), // 10p
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(

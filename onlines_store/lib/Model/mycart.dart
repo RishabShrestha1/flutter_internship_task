@@ -4,8 +4,10 @@ class CartItem {
   final int productId;
   final String productName;
   final double price;
+  final String image;
 
   CartItem({
+    required this.image,
     required this.productId,
     required this.productName,
     required this.price,

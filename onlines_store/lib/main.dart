@@ -8,6 +8,8 @@ import 'package:onlines_store/Screens/searchpage.dart';
 import 'package:onlines_store/Theme/custom_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/intl.dart';
 
 void main(List<String> args) {
   runApp(
@@ -35,6 +37,15 @@ class MyApp extends StatelessWidget {
             '/product': (context) => ProductPage(product: sampleProduct),
             '/cart': (context) => const Mycart(),
           },
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: [
+            const Locale('en', 'US'),
+            const Locale('np', 'Nepal'),
+          ],
         );
       },
     );

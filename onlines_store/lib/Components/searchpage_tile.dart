@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:onlines_store/Model/product.dart';
 import 'package:onlines_store/Screens/productdetail.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class ProductSearchResultItem extends StatelessWidget {
   final Product product;
@@ -24,8 +25,8 @@ class ProductSearchResultItem extends StatelessWidget {
         child: Row(
           children: [
             SizedBox(
-              height: 100,
-              width: 100,
+              height: 10.h,
+              width: Adaptive.w(20),
               child: Image.network(
                 product.image ?? '',
                 fit: BoxFit.scaleDown,

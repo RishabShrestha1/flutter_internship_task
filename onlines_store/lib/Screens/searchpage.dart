@@ -40,6 +40,7 @@ class SearchPageState extends State<SearchPage> {
     );
   }
 
+// create a method to perform the search and update the UI
   void _performSearch() async {
     String searchText = _searchController.text;
     if (searchText.isNotEmpty) {
@@ -71,6 +72,7 @@ class SearchPageState extends State<SearchPage> {
     }
   }
 
+// create a method to filter the results using the search text and built-in Dart methods
   List<Product> _filterResults(List<Product> results, String searchText) {
     return results
         .where((product) =>
@@ -79,6 +81,7 @@ class SearchPageState extends State<SearchPage> {
         .toList();
   }
 
+// create a method to build the search results dynamically
   Widget _buildSearchResults() {
     if (_searchResults.isNotEmpty) {
       return ListView.builder(
