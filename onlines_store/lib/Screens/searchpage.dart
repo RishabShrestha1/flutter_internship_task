@@ -1,18 +1,20 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:onlines_store/Api/apihandler.dart';
+import 'package:onlines_store/Components/searchpage_tile.dart';
 import 'package:onlines_store/Model/product.dart';
-import 'package:onlines_store/Screens/productdetail.dart';
 import '../Components/cache_manager.dart';
+// Import the search result item
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
 
   @override
-  _SearchPageState createState() => _SearchPageState();
+  SearchPageState createState() => SearchPageState();
 }
 
-class _SearchPageState extends State<SearchPage> {
-  TextEditingController _searchController = TextEditingController();
+class SearchPageState extends State<SearchPage> {
+  final TextEditingController _searchController = TextEditingController();
   List<Product> _searchResults = [];
 
   @override
@@ -21,7 +23,7 @@ class _SearchPageState extends State<SearchPage> {
       appBar: AppBar(
         title: TextField(
           controller: _searchController,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             hintText: 'Search products...',
           ),
           onSubmitted: (value) {
@@ -58,7 +60,9 @@ class _SearchPageState extends State<SearchPage> {
           _searchResults = _filterResults(results, searchText);
         });
       } catch (e) {
-        print('Error performing search: $e');
+        if (kDebugMode) {
+          print('Error performing search: $e');
+        }
       }
     } else {
       setState(() {
@@ -80,44 +84,11 @@ class _SearchPageState extends State<SearchPage> {
       return ListView.builder(
         itemCount: _searchResults.length,
         itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      ProductPage(product: _searchResults[index]),
-                ),
-              );
-            },
-            child: Card(
-              child: Row(
-                children: [
-                  SizedBox(
-                    height: 100,
-                    width: 100,
-                    child: Image.network(
-                      _searchResults[index].image ?? '',
-                      fit: BoxFit.scaleDown,
-                    ),
-                  ),
-                  Expanded(
-                    child: ListTile(
-                      title: Text(_searchResults[index].title ?? ''),
-                      subtitle: Text(
-                        '\$${_searchResults[index].price.toString() ?? ''}',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
+          return ProductSearchResultItem(product: _searchResults[index]);
         },
       );
     } else {
-      return Center(
+      return const Center(
         child: Text('No results found.'),
       );
     }

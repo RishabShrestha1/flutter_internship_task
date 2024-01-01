@@ -10,11 +10,11 @@ class ProductPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Product Details'),
+        title: const Text('Product Details'),
       ),
-      body: Container(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Expanded(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -35,27 +35,28 @@ class ProductPage extends StatelessWidget {
                   const SizedBox(height: 16),
                   Text(
                     product.title!,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     'Category: ${product.category}',
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                    style: const TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     'Price: \$${product.price}',
-                    style: TextStyle(fontSize: 16, color: Colors.green),
+                    style: const TextStyle(fontSize: 16, color: Colors.green),
                   ),
                   const SizedBox(height: 16),
-                  Text(
+                  const Text(
                     'Description:',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     product.description!,
-                    style: TextStyle(fontSize: 16),
+                    style: const TextStyle(fontSize: 16),
                   ),
                 ],
               ),
@@ -64,7 +65,7 @@ class ProductPage extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       width: 20,
                     ),
                     ElevatedButton(
@@ -75,7 +76,7 @@ class ProductPage extends StatelessWidget {
                       onPressed: () {},
                       child: const Text('Buy Now'),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 20,
                     ),
                   ],

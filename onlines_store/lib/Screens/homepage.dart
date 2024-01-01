@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:onlines_store/Api/apihandler.dart';
+import 'package:onlines_store/Components/homepage_tile.dart';
 import 'package:onlines_store/Model/product.dart';
-import 'package:onlines_store/Screens/productdetail.dart';
 import '../Components/cache_manager.dart';
 
 class Homepage extends StatefulWidget {
@@ -61,86 +61,7 @@ class _HomepageState extends State<Homepage> {
               ),
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            ProductPage(product: snapshot.data![index]),
-                      ),
-                    );
-                  },
-                  child: SizedBox(
-                    height: 500,
-                    child: Card(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Image.network(
-                                snapshot.data![index].image!,
-                                height: 100,
-                                width: double.infinity,
-                                fit: BoxFit.scaleDown,
-                              ),
-                              const SizedBox(height: 10), // 10p
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  snapshot.data![index].title!.length > 20
-                                      ? snapshot.data![index].title!
-                                          .substring(0, 20)
-                                      : snapshot.data![index].title!,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: Text(
-                                  snapshot.data![index].description!.length > 50
-                                      ? snapshot.data![index].description!
-                                          .substring(0, 50)
-                                      : snapshot.data![index].description!,
-                                  maxLines: 3,
-                                  overflow: TextOverflow.fade,
-                                ),
-                              ),
-                              TextButton(
-                                onPressed: () {},
-                                child: const Text('Read More'),
-                              ),
-                            ],
-                          ),
-                          Expanded(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child:
-                                      Text('\$${snapshot.data![index].price}'),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(Icons.add_shopping_cart),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
+                return ProductWidget(product: snapshot.data![index]);
               },
             );
           } else if (snapshot.hasError) {
