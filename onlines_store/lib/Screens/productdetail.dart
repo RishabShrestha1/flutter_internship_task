@@ -37,81 +37,77 @@ class ProductPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Image.network(
-                          product.image!,
-                          height: 300,
-                          width: double.infinity,
-                          fit: BoxFit.scaleDown,
-                        ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.network(
+                        product.image!,
+                        height: 300,
+                        width: double.infinity,
+                        fit: BoxFit.scaleDown,
                       ),
                     ),
-                    const SizedBox(height: 16),
-                    Text(
-                      product.title!,
-                      style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    product.title!,
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Category: ${product.category}',
+                    style: const TextStyle(fontSize: 16, color: Colors.grey),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Price: \$${product.price}',
+                    style: const TextStyle(fontSize: 16, color: Colors.green),
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Description:',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    product.description!,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+              SizedBox(height: 9.h),
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const SizedBox(
+                      width: 20,
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Category: ${product.category}',
-                      style: const TextStyle(fontSize: 16, color: Colors.grey),
+                    ElevatedButton(
+                      onPressed: () {
+                        _addToCart(context, product);
+                      },
+                      child: const Text('Add to Cart'),
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Price: \$${product.price}',
-                      style: const TextStyle(fontSize: 16, color: Colors.green),
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: const Text('Buy Now'),
                     ),
-                    const SizedBox(height: 16),
-                    const Text(
-                      'Description:',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      product.description!,
-                      style: const TextStyle(fontSize: 16),
+                    const SizedBox(
+                      width: 20,
                     ),
                   ],
                 ),
-                SizedBox(height: 9.h),
-                Padding(
-                  padding:
-                      const EdgeInsets.only(left: 8.0, right: 8.0, top: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          _addToCart(context, product);
-                        },
-                        child: const Text('Add to Cart'),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: const Text('Buy Now'),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
+              )
+            ],
           ),
         ),
       ),

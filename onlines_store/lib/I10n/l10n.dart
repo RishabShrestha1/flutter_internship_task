@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
 
-class l10n {
+class L10n {
   static final all = [
     const Locale('en'),
     const Locale('np'),

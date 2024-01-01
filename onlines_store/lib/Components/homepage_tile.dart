@@ -88,14 +88,12 @@ class _ProductWidgetState extends State<ProductWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Center(
-                    child: Expanded(
-                      child: Image.network(
-                        widget.product.image!,
-                        height: 15.h,
-                        width: Adaptive.w(20),
-                        fit: BoxFit.scaleDown,
-                        alignment: Alignment.center,
-                      ),
+                    child: Image.network(
+                      widget.product.image!,
+                      height: 15.h,
+                      width: Adaptive.w(20),
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.center,
                     ),
                   ),
                   const SizedBox(height: 5), // 10p
