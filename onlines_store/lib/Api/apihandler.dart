@@ -10,15 +10,25 @@ class ApiHandle {
   Future<List<Product>> fetchProducts() async {
     var url = apiConstant.baseurl + apiConstant.allproducts;
     final response = await http.get(Uri.parse(url));
-    if (response.statusCode == 200) {
-      List<dynamic> data = json.decode(response.body);
-      List<Product> products =
-          data.map((json) => Product.fromJson(json)).toList();
-      return products;
-    } else {
-      throw Exception('Failed to load products');
+    try {
+      if (response.statusCode == 200) {
+        List<dynamic> data = json.decode(response.body);
+        List<Product> products =
+            data.map((json) => Product.fromJson(json)).toList();
+        return products;
+      } else {
+        throw Exception('Failed to load products');
+      }
+    } on Exception catch (e) {
+      print(e);
+      return <Product>[];
     }
   }
 
-  searchProducts(String searchText) {}
+  searchProducts(String searchText) {
+    var url = apiConstant.baseurl + apiConstant.allproducts;
+    http.post(Uri.parse(url), body: {'searchText': searchText}).then((value) {
+      print(value.body);
+    });
+  }
 }
