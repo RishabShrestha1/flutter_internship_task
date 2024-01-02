@@ -15,17 +15,18 @@ class CartItem {
 }
 
 class CartProvider extends ChangeNotifier {
-  final List<CartItem> _items = [];
+  final List<CartItem> mycartitems = [];
 
-  List<CartItem> get items => _items;
+  List<CartItem> get items => mycartitems;
 
   void addToCart(CartItem item) {
-    _items.add(item);
+    mycartitems.add(item);
     notifyListeners();
   }
 
+  int get cartItemCount => mycartitems.length;
   void removeFromCart(CartItem item) {
-    _items.remove(item);
+    mycartitems.remove(item);
     notifyListeners();
   }
 }

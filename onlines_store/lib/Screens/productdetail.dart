@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:onlines_store/Model/mycart.dart';
 import 'package:onlines_store/Model/product.dart';
+import 'package:onlines_store/Theme/custom_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -23,7 +24,22 @@ class ProductPage extends StatelessWidget {
     // Show a snackbar or other feedback to indicate the item was added to the cart
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('${product.title} added to cart'),
+        content: Text(
+          '${product.title} added to cart',
+          style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.bold,
+              color: Colors.black),
+        ),
+        action: SnackBarAction(
+          label: 'Undo',
+          onPressed: () {
+            cartProvider.removeFromCart(item);
+          },
+          backgroundColor: Colors.white,
+          textColor: Colors.black,
+        ),
+        backgroundColor: mytheme.colorScheme.primary,
       ),
     );
   }

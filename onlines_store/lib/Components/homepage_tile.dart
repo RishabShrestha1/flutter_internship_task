@@ -39,28 +39,49 @@ class _ProductWidgetState extends State<ProductWidget> {
           title: const Text('Add to Cart'),
           content: Text('Do you want to add ${product.title} to your cart?'),
           actions: [
-            TextButton(
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.red,
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
               ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('No'),
+              width: 25.w,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+                  foregroundColor: Theme.of(context).colorScheme.primary,
+                  shape: ContinuousRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    side: BorderSide(
+                      color: Theme.of(context).colorScheme.primary,
+                      width: 2,
+                    ),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('No'),
+              ),
             ),
-            TextButton(
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.green,
+            SizedBox(width: 10.w), // 20p
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
               ),
-              onPressed: () {
-                Navigator.pop(context);
-                cartProvider.addToCart(item);
-              },
-              child: const Text('Yes'),
+              width: 25.w,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: ContinuousRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                  cartProvider.addToCart(item);
+                },
+                child: const Text('Yes'),
+              ),
             ),
           ],
+          actionsAlignment: MainAxisAlignment.center,
         );
       },
     );
@@ -113,8 +134,10 @@ class _ProductWidgetState extends State<ProductWidget> {
                       widget.product.description!.length > 50
                           ? '${widget.product.description!.substring(0, 50)}......'
                           : widget.product.description!,
-                      maxLines: 3,
-                      overflow: TextOverflow.fade,
+                      maxLines: 2,
+                      softWrap: true,
+                      textAlign: TextAlign.left,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   TextButton(

@@ -25,30 +25,33 @@ class _MycartState extends State<Mycart> {
             itemCount: cartItems.length,
             itemBuilder: (context, index) {
               CartItem item = cartItems[index];
-              return Card(
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: Adaptive.w(20),
-                      height: 10.h,
-                      child: Image.network(
-                        item.image,
-                        fit: BoxFit.scaleDown,
-                      ),
-                    ),
-                    Expanded(
-                      child: ListTile(
-                        title: Text(item.productName),
-                        subtitle: Text('\$${item.price}'),
-                        trailing: IconButton(
-                          onPressed: () {
-                            removeFromCart(context, item);
-                          },
-                          icon: const Icon(Icons.remove_shopping_cart),
+              return Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Card(
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: Adaptive.w(20),
+                        height: 10.h,
+                        child: Image.network(
+                          item.image,
+                          fit: BoxFit.scaleDown,
                         ),
                       ),
-                    ),
-                  ],
+                      Expanded(
+                        child: ListTile(
+                          title: Text(item.productName),
+                          subtitle: Text('\$${item.price}'),
+                          trailing: IconButton(
+                            onPressed: () {
+                              removeFromCart(context, item);
+                            },
+                            icon: const Icon(Icons.remove_shopping_cart),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               );
             },

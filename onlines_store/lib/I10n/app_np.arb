@@ -2,5 +2,14 @@
     "@@locale": "np",
     "language": "नेपाली",
     "helloWorld": "नमस्कार संसार!",
-  "multiLanguage": "बहु भाषा"
+    "multiLanguage": "बहु भाषा",
+    "onlinestore": "अनलाइन स्टोर",
+    "welcome": "स्वागत छ",
+    "searchforproducts": "उत्पादनहरूको लागि खोज्नुहोस्",
+    "yes": "हो",
+    "no": "होइन",
+    "undo": "पूर्ववत",
+    "addtocart": "कार्टमा राख्नुहोस्",
+    "removefromcart": "कार्टबाट हटाउनुहोस्"
+
 }

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:onlines_store/Api/apihandler.dart';
 import 'package:onlines_store/Components/homepage_tile.dart';
+import 'package:onlines_store/Model/mycart.dart';
 import 'package:onlines_store/Model/product.dart';
+import 'package:provider/provider.dart';
 import '../Components/cache_manager.dart';
+import 'package:badges/badges.dart' as badges;
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -31,6 +34,12 @@ class _HomepageState extends State<Homepage> {
     }
   }
 
+  Future<void> _refreshProducts() async {
+    setState(() {
+      _productsFuture = _getProducts();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,38 +51,51 @@ class _HomepageState extends State<Homepage> {
             onPressed: () => Navigator.pushNamed(context, '/search'),
             icon: const Icon(Icons.search),
           ),
-          IconButton(
-            onPressed: () => Navigator.pushNamed(context, '/cart'),
-            icon: const Icon(Icons.shopping_cart),
-          ),
+          Consumer<CartProvider>(builder: (context, cartProvider, child) {
+            return badges.Badge(
+              position: badges.BadgePosition.topEnd(top: 0, end: 3),
+              badgeAnimation: const badges.BadgeAnimation.fade(),
+              badgeContent: Text(
+                '${cartProvider.cartItemCount}',
+                style: const TextStyle(color: Colors.white),
+              ),
+              child: IconButton(
+                onPressed: () => Navigator.pushNamed(context, '/cart'),
+                icon: const Icon(Icons.shopping_cart),
+              ),
+            );
+          }),
         ],
       ),
-      body: FutureBuilder<List<Product>>(
-        future: _productsFuture,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 8.0,
-                mainAxisSpacing: 8.0,
-                childAspectRatio: 0.5,
-              ),
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                return ProductWidget(product: snapshot.data![index]);
-              },
-            );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text('Error: ${snapshot.error}'),
-            );
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
+      body: RefreshIndicator(
+        onRefresh: _refreshProducts,
+        child: FutureBuilder<List<Product>>(
+          future: _productsFuture,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 8.0,
+                  mainAxisSpacing: 8.0,
+                  childAspectRatio: 0.5,
+                ),
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, index) {
+                  return ProductWidget(product: snapshot.data![index]);
+                },
+              );
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text('Error: ${snapshot.error}'),
+              );
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ),
       ),
     );
   }
