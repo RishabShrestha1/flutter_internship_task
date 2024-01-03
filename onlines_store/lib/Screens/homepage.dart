@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:onlines_store/Api/apihandler.dart';
 import 'package:onlines_store/Components/homepage_tile.dart';
+import 'package:onlines_store/I10n/app_localization_en.dart';
+import 'package:onlines_store/I10n/app_localization_np.dart';
 import 'package:onlines_store/Model/mycart.dart';
 import 'package:onlines_store/Model/product.dart';
+import 'package:onlines_store/main.dart';
 import 'package:provider/provider.dart';
 import '../Components/cache_manager.dart';
 import 'package:badges/badges.dart' as badges;
@@ -16,6 +19,7 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   late Future<List<Product>> _productsFuture;
+
   @override
   void initState() {
     _productsFuture = _getProducts();
@@ -42,11 +46,26 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
+    var localeNotifier = Provider.of<LocaleNotifier>(context);
+    var localizations = localeNotifier.locale.languageCode == 'en'
+        ? Localizations.of<AppLocalizationsEn>(context, AppLocalizationsEn)!
+        : Localizations.of<AppLocalizationsNp>(context, AppLocalizationsNp)!;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
-        title: const Text('Online Store'),
+        title: Text(localizations.title),
         actions: [
+          IconButton(
+            onPressed: () {
+              final newLocale = localeNotifier.locale.languageCode == 'en'
+                  ? const Locale('np', 'Nepal')
+                  : const Locale('en', 'US');
+
+              localeNotifier.setLocale(newLocale);
+            },
+            icon: const Icon(Icons.translate),
+          ),
           IconButton(
             onPressed: () => Navigator.pushNamed(context, '/search'),
             icon: const Icon(Icons.search),
